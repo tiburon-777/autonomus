@@ -5,5 +5,12 @@ up: ## Supplement services for running SYR or AB / Run containers
 down: ## Supplement services for running SYR or AB / Stop containers
 	docker-compose down
 
+image:
+	docker pull $(name) ;\
+	docker tag $(name) localhost:5000/$(name) ;\
+	docker push localhost:5000/$(name) ;\
+	docker image remove $(name) ;\
+	docker image remove localhost:5000/$(name) ;\
+
 help: ## Print this help and exit
 	@grep -E '^[a-zA-Z0-9_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
