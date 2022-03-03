@@ -13,7 +13,7 @@ services:
       - 'POSTGRES_COLLATE=C'
       - 'POSTGRES_COLLATE_TYPE=C'
     volumes:
-      - './data/psql:/var/lib/postgresql/data'
+      - './psql:/var/lib/postgresql/data'
     network_mode: host
     # ports:
     #   - '5432:5432'
@@ -24,7 +24,7 @@ services:
     environment:
         - 'RUN_CROND=true'
     volumes:
-        - './data:/data/gogs'
+        - './gogs:/data/gogs'
         - './repo:/data/git/gogs-repositories'
     network_mode: host
     # ports:
@@ -41,7 +41,14 @@ services:
         - './proxy:/var/lib/athens'
     ports:
       - '3001:3000'
-
+  registry:
+    image: registry:2
+    container_name: registry
+    restart: always
+    volumes:
+        - './registry:/var/lib/registry'
+    ports:
+      - '5000:5000'
 volumes:
     gogs-data:
         driver: local
